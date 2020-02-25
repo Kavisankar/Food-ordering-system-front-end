@@ -6,7 +6,8 @@ import './App.sass';
 import './App.css';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
-import CartScreen from './screens/CartScreen/';
+import CartScreen from './screens/CartScreen';
+import AuthScreen from './screens/AuthScreen'
 import rootContext from './context/rootContext';
 
 
@@ -15,10 +16,19 @@ export default class App extends Component {
     super(props)
     this.state = {
        menu: {"5e3ec6bc5857dd0c3865d111": {name:"Boneless Chilli Chicken","cost": 65}},
-       cart: {"5e3ec6bc5857dd0c3865d111": 5}
+       cart: {"5e3ec6bc5857dd0c3865d111": 5},
+       token: ''
     }
   };
   
+  _login = (token) => {
+    this.setState({token});
+  }
+
+  _logout = () => {
+    this.setState({token: ''})
+  }
+
   _setMenu = (rawMenu) => {
     let menu = {};
     for(const dish of rawMenu) {
@@ -60,6 +70,9 @@ export default class App extends Component {
           <rootContext.Provider value={{
             menu: this.state.menu,
             cart: this.state.cart,
+            token: this.state.token,
+            login: this._login,
+            logout: this._logout,
             setMenu: this._setMenu,
             addToCart: this._addToCart,
             emptyCart: this._emptyCart,
@@ -71,8 +84,12 @@ export default class App extends Component {
               <Switch>
                 <Redirect from="/" to="/home" exact />
                 <Route path="/home" component={HomeScreen} exact />
+                { this.state.token !== '' && <Redirect from='/login' to='/home' />}
+                { this.state.token === '' && <Redirect from='/orders' to='/home' />}
+                { this.state.token === '' && <Redirect from='/dishes' to='/home' />}
                 <Route path="/cart" render={props => <ErrorBoundary><CartScreen /></ErrorBoundary>} exact />
                 <Route path="/menu" render={props => <ErrorBoundary><MenuScreen /></ErrorBoundary>} exact />
+                <Route path="/login" render={props => <ErrorBoundary><AuthScreen /></ErrorBoundary>} exact />
               </Switch>
             </BrowserRouter>
           </rootContext.Provider>

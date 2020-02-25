@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import Logo from '../Logo';
+import rootContext from '../../context/rootContext';
 
 export default class Navigator extends Component {
+  static contextType = rootContext;
+
   render() {
     return (
       <div className="bg-dark shadow" >
@@ -16,12 +19,30 @@ export default class Navigator extends Component {
             <li className="nav-item">
               <NavLink className="nav-link" to="/home">Home</NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/menu">Menu</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/cart">Cart</NavLink>
-            </li>
+            {
+              (this.context.token === '') ? (
+                  <>
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/menu">Menu</NavLink>
+                    </li>
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/cart">Cart</NavLink>
+                    </li>
+                  </>
+                ):(
+                  <>
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/dishes">Dishes</NavLink>
+                    </li>
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/orders">Orders</NavLink>
+                    </li>
+                    <li className="nav-item">
+                      <button type="button" className="btn nav-link" onClick={this.context.logout}>Logout</button>
+                    </li>
+                  </>
+                )
+            }
           </ul>
           </div>
         </nav>
