@@ -3,6 +3,7 @@ import React from 'react';
 export default React.createContext({
   menu: {},
   cart: {},
+  orders: {},
   token: '',
   login: (token) => {},
   logout: () => {},
@@ -11,4 +12,8 @@ export default React.createContext({
   emptyCart: () => {},
   removeFromCart: dishId => {},
   updateCartItem: (dishId, quantity) => {},
+  updateDish: (dish) => {},
+  removeDish: (dishId) => {},
+  setOrders: rawOrders => {},
+  removeOrder: id => {}
 });

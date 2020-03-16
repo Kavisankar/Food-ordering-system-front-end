@@ -110,6 +110,12 @@
   height: 100vh;
 }
 
+.float-right{
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
